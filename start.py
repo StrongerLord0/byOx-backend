@@ -9,6 +9,7 @@ app = Flask(__name__)
 @app.route('/analyze', methods=['POST'])
 def analyze():
 	file = request.files['file']
+	print(file.filename)
 	in_memory_file = io.BytesIO()
 	file.save(in_memory_file)
 	data = np.fromstring(in_memory_file.getvalue(), dtype=np.uint8)
