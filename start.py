@@ -10,15 +10,24 @@ CORS(app)
 
 @app.route('/analyze', methods=['POST'])
 def analyze():
-	print("Files",request.files)
+	if 'file' not in request.files:
+		return jsonify({'error': 'No file part in the request'}), 400
 	file = request.files['file']
+	if file.filename == '':
+		return jsonify({'error': 'No selected file'}), 400
+	if not file or file.filename.split('.')[-1].lower() not in ['png', 'jpg', 'jpeg']:
+		return jsonify({'error': 'Invalid file type'}), 400
+
 	in_memory_file = io.BytesIO()
 	file.save(in_memory_file)
 	data = np.fromstring(in_memory_file.getvalue(), dtype=np.uint8)
 	color_image_flag = 1
 	img = cv2.imdecode(data, color_image_flag)
 
-	result = DeepFace.analyze(img, actions = ['emotion'])
+	try:
+		result = DeepFace.analyze(img, actions=['emotion'])
+	except ValueError:
+		return jsonify({'error': 'No face detected in the image'}), 400
 
 	return jsonify(result), 200
 
