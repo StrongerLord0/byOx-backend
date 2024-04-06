@@ -28,7 +28,7 @@ def analyze():
 	try:
 		result = DeepFace.analyze(img, actions=['emotion'])
 	except ValueError:
-		return jsonify({'error': 'No face detected in the image'}), 400
+		return jsonify({'error': 'No face detected...'}), 200
 
 	# Draw rectangles around detected faces and put emotion text
 	for face in result:
