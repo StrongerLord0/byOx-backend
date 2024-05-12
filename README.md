@@ -12,5 +12,5 @@ Para instalar los paquetes únicamente hay que correr el comando en el directori
 Para ejecutar el API hay que usar el siguiente comando
 
 ```bash
-    pyhton start.py
+    python start.py
 ```
